@@ -1,100 +1,62 @@
-# Certainly! - A Simple News Tracker App
+# NewsTraker
 
-Certainly! is a user-friendly web application that consolidates news articles based on different categories. Users can easily select a specific category, click the "Fetch News" button, and the app will promptly display the latest news articles from the chosen category.
+A News Aggregator web app: pick a category and browse top headlines from [NewsAPI](https://newsapi.org/), served through a small Express proxy.
 
-## Getting Started
+Built as a practice project while learning React.
 
-Follow these steps to set up and run the Certainly! app on your local machine.
+## Features
 
-### Prerequisites
+- Choose a category: General, Business or Technology.
+- Headlines load automatically when the category changes; a "Fetch News" button reloads them.
+- Each article is shown as a card with image, title, description and a "Read more" link to the source.
+- The NewsAPI key stays on the server: the React app calls a local Express endpoint (`GET /news?category=...`), which calls NewsAPI's `top-headlines`.
 
-Ensure that you have [Node.js](https://nodejs.org/) installed on your machine.
+## Tech stack
 
-### Installation
+- React 18 (Create React App / `react-scripts`)
+- Axios
+- Node.js + Express, `cors`, `dotenv` (API proxy in `api/index.js`)
+- NewsAPI
 
-1. **Clone the repository:**
+## Getting started
 
-   ```bash
-   git clone https://github.com/your-username/certainly-news-app.git
-   ```
+Prerequisites: Node.js 16+, npm, and a free API key from https://newsapi.org/.
 
-2. **Navigate to the project directory:**
-
-   ```bash
-   cd news_tracker
-   ```
-
-3. **Create a `.env` file:**
-
-   In the root directory, create a file named `.env`. This file will store your environment variables.
-
-4. **Add your API key to the `.env` file:**
-
-   Open the `.env` file in a text editor and add the following line:
-
-   ```env
-   NEWS_API_KEY=your-api-key-goes-here
-   ```
-
-   Obtain your API key by logging in to [https://newsapi.org/](https://newsapi.org/) and retrieving your key. Replace `your-api-key-goes-here` with your actual News API key.
-
-5. **Install `dotenv` package:**
-
-   Run the following command in your project's root directory to install the `dotenv` package:
-
-   ```bash
-   npm install dotenv
-   ```
-
-   Open two terminals; in one, navigate to the `api` directory and start the server:
-
-7. **Start the server:**
-
-   In the `api` directory:
-
-   ```bash
-   node index.js
-   ```
-
-   Keep this terminal running to keep the server active.
-
-8. **Start the React app:**
-
-   In the root directory:
-
-   ```bash
-   npm install
-   npm start
-   ```
-
-   This will open the app in your default web browser.
-
-## Usage
-
-- Choose a category (General, Business, Technology).
-- Click the "Fetch News" button to load the latest articles in that category.
-
-## Project Structure
-
-- `src`: Contains the source code for the React app.
-  - `NewsCard.js`: React component for rendering individual news articles.
-  - `App.js`: Main component managing the overall structure of the application.
-- `api`: Contains the server-side code.
-  - `index.js`: Server file for fetching news articles from the NewsAPI.
-
-## Built With
-
-- [React.js](https://reactjs.org/) - JavaScript library for building user interfaces.
-- [Axios](https://axios-http.com/) - Promise-based HTTP client for the browser and Node.js.
-- [Cors](https://www.npmjs.com/package/cors) - Middleware for enabling Cross-Origin Resource Sharing.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [NewsAPI](https://newsapi.org/) - The API used to fetch news articles.
+```bash
+git clone https://github.com/AkshayTripathiAI/NewsTraker.git
+cd NewsTraker
+npm install
 ```
 
-Copy and paste this content into a file named `README.md` in the root directory of your project. Customize the URLs, instructions, and other details to fit your specific project.
+Create a `.env` file in the project root (it is git-ignored):
+
+```env
+NEWS_API_KEY=your-newsapi-key
+# optional, defaults to 3001
+PORT=3001
+```
+
+Start the API proxy (from the project root, so `dotenv` finds `.env`):
+
+```bash
+node api/index.js
+```
+
+In a second terminal, start the React app:
+
+```bash
+npm start
+```
+
+The app opens at http://localhost:3000 and expects the proxy at `http://localhost:3001` (hard-coded in `src/App.js`).
+
+## Project structure
+
+```
+api/
+└── index.js                  # Express proxy: GET /news -> NewsAPI top-headlines
+src/
+├── App.js                    # Category selector, fetching, card grid
+├── App.css
+└── component/Cards/newsCard.jsx  # Article card
+```
